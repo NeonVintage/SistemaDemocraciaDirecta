@@ -1,0 +1,189 @@
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║   SISTEMA DEMOCRACIA DIRECTA ARGENTINA - ESTRUCTURA DEL PROYECTO ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+democracy/
+│
+├── 📄 index.html                  ← PÁGINA PRINCIPAL (Login/Registro)
+├── 📄 index.php                   ← Redirección a index.html
+├── 📄 dashboard.html              ← PANEL PRINCIPAL DEL SISTEMA
+├── 📄 verify.php                  ← Verificación de cuentas por email
+│
+├── 🔧 api.php                     ← BACKEND API (Toda la lógica)
+│   ├── Registro de usuarios
+│   ├── Login/Logout
+│   ├── Creación de leyes
+│   ├── Sistema de votación
+│   ├── Comentarios
+│   ├── Votación de comentarios
+│   └── Envío de emails
+│
+├── 📜 auth.js                     ← JavaScript de autenticación
+│   ├── Formulario de login
+│   ├── Formulario de registro
+│   └── Validaciones
+│
+├── 📜 app.js                      ← JavaScript del dashboard
+│   ├── Gestión de leyes
+│   ├── Sistema de votación
+│   ├── Comentarios
+│   ├── Modal de detalles
+│   └── Navegación
+│
+├── 🎨 styles.css                  ← ESTILOS COMPLETOS
+│   ├── Login/Registro
+│   ├── Dashboard
+│   ├── Tarjetas de leyes
+│   ├── Modal
+│   ├── Comentarios
+│   └── Responsive design
+│
+├── ⚙️ .htaccess                  ← SEGURIDAD
+│   ├── Protección de data/
+│   ├── Bloqueo de .json
+│   ├── Headers de seguridad
+│   └── Configuración del servidor
+│
+├── 🔒 .gitignore                 ← Protección de datos sensibles
+│
+├── ⚙️ config.example.php         ← Ejemplo de configuración
+│
+├── 📚 README.md                  ← Documentación completa
+├── 📚 INSTALL.txt                ← Guía de instalación
+├── 📚 LEEME.txt                  ← Resumen en español
+├── 📚 ESTRUCTURA.txt             ← Este archivo
+│
+├── 🧪 test-manual.php            ← Panel de pruebas
+│   ├── Verificación de sistema
+│   ├── Crear usuarios de prueba
+│   ├── Ver usuarios registrados
+│   └── Limpiar datos
+│   └── ⚠️ ELIMINAR EN PRODUCCIÓN
+│
+└── 📁 data/                      ← CREADO AUTOMÁTICAMENTE
+    ├── users.json                ← Todos los usuarios
+    ├── laws.json                 ← Todas las leyes
+    ├── 📁 users/                 ← (Reservado para futuro)
+    ├── 📁 laws/                  ← (Reservado para futuro)
+    ├── 📁 comments/              ← Comentarios por ley
+    │   └── [law_id].json
+    └── 📁 votes/                 ← Votos
+        ├── law_[id].json         ← Votos de leyes
+        └── comment_[id].json     ← Votos de comentarios
+
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                          FLUJO DEL SISTEMA                        ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+1️⃣  REGISTRO
+    Usuario → index.html → auth.js → api.php → data/users.json
+    api.php → Envía email de verificación
+    Usuario → Click en email → verify.php → Usuario verificado
+
+2️⃣  LOGIN
+    Usuario → index.html → auth.js → api.php → Valida credenciales
+    api.php → Crea sesión → Redirige a dashboard.html
+
+3️⃣  PROPONER LEY
+    Usuario → dashboard.html → Nueva Propuesta → app.js → api.php
+    api.php → Guarda en data/laws.json
+
+4️⃣  VOTAR LEY
+    Usuario → Click en ley → Modal → Vota → app.js → api.php
+    api.php → Guarda voto en data/votes/law_[id].json
+    api.php → Actualiza contadores en laws.json
+    api.php → Evalúa si aprueba/rechaza (10+ votos)
+
+5️⃣  COMENTAR
+    Usuario → Escribe comentario → app.js → api.php
+    api.php → Guarda en data/comments/[law_id].json
+
+6️⃣  VOTAR COMENTARIO
+    Usuario → Upvote/Downvote → app.js → api.php
+    api.php → Guarda en data/votes/comment_[id].json
+    api.php → Actualiza contadores
+    Frontend → Reordena por score (más votados arriba)
+
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                      TECNOLOGÍAS UTILIZADAS                       ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+✓ HTML5                  - Estructura semántica
+✓ CSS3                   - Estilos modernos, Flexbox, Grid
+✓ JavaScript (Vanilla)   - Sin frameworks, puro JS
+✓ PHP 7.4+              - Backend y API
+✓ JSON                   - Almacenamiento de datos
+✓ Session Storage        - Gestión de sesiones
+✓ SMTP/Email            - Verificación de cuentas
+
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                        CARACTERÍSTICAS                            ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+✅ Sistema completo de autenticación
+✅ Verificación por email
+✅ Propuesta de leyes
+✅ Sistema de votación (a favor/en contra)
+✅ Comentarios con sistema de votos
+✅ Organización automática de leyes (propuestas/aprobadas/rechazadas)
+✅ Interfaz moderna y responsive
+✅ Almacenamiento seguro en JSON
+✅ Protección de datos con .htaccess
+✅ Sin dependencias externas
+✅ Funciona inmediatamente al subir al servidor
+
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                          SEGURIDAD                                ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+🔒 Contraseñas hasheadas con password_hash()
+🔒 Sesiones PHP seguras
+🔒 Validación de entrada en frontend y backend
+🔒 Protección XSS con htmlspecialchars/escapeHtml
+🔒 Directorio data/ inaccesible desde navegador
+🔒 Archivos .json bloqueados por .htaccess
+🔒 Headers de seguridad (X-Frame-Options, etc.)
+🔒 Tokens únicos para verificación de email
+
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                      INSTALACIÓN RÁPIDA                           ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+1. Sube TODOS los archivos al servidor
+2. Asegúrate de que PHP esté habilitado
+3. Accede a: http://tudominio.com/index.html
+4. ¡Funciona! 🎉
+
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                         PRÓXIMOS PASOS                            ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+1. 📤 Sube los archivos a tu servidor web
+2. 🧪 Usa test-manual.php para verificar que todo funciona
+3. 👤 Crea usuarios de prueba
+4. 📝 Prueba crear leyes y votar
+5. 💬 Prueba el sistema de comentarios
+6. 🗑️  Elimina test-manual.php antes de lanzar en producción
+7. 🚀 ¡Lanza tu sistema de democracia directa!
+
+
+╔═══════════════════════════════════════════════════════════════════╗
+║                  ¡SISTEMA 100% COMPLETO!                          ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+Todo está listo para funcionar. Solo sube los archivos
+y el sistema estará operativo inmediatamente.
+
+No requiere instalación, configuración, npm, node, bases de datos,
+XAMPP ni nada adicional. ¡Plug & Play!
+
+

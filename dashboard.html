@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema Democracia Directa Argentina</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <h1>Sistema Democracia Directa Argentina</h1>
+            <div class="user-info">
+                <span id="user-name"></span>
+                <button onclick="logout()" class="btn btn-secondary">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <nav class="sidebar">
+                <button class="nav-btn active" onclick="showSection('propuestas')">
+                    <span class="icon">📋</span>
+                    Leyes Propuestas
+                </button>
+                <button class="nav-btn" onclick="showSection('aprobadas')">
+                    <span class="icon">✅</span>
+                    Leyes Aprobadas
+                </button>
+                <button class="nav-btn" onclick="showSection('rechazadas')">
+                    <span class="icon">❌</span>
+                    Leyes Rechazadas
+                </button>
+                <button class="nav-btn" onclick="showSection('nueva-propuesta')">
+                    <span class="icon">➕</span>
+                    Nueva Propuesta
+                </button>
+            </nav>
+
+            <main class="main-content">
+                <!-- Leyes Propuestas -->
+                <section id="propuestas-section" class="content-section active">
+                    <h2>Leyes Propuestas</h2>
+                    <div id="propuestas-list" class="laws-list"></div>
+                </section>
+
+                <!-- Leyes Aprobadas -->
+                <section id="aprobadas-section" class="content-section">
+                    <h2>Leyes Aprobadas</h2>
+                    <div id="aprobadas-list" class="laws-list"></div>
+                </section>
+
+                <!-- Leyes Rechazadas -->
+                <section id="rechazadas-section" class="content-section">
+                    <h2>Leyes Rechazadas</h2>
+                    <div id="rechazadas-list" class="laws-list"></div>
+                </section>
+
+                <!-- Nueva Propuesta -->
+                <section id="nueva-propuesta-section" class="content-section">
+                    <h2>Proponer Nueva Ley</h2>
+                    <form onsubmit="return handleNewProposal(event)" class="proposal-form">
+                        <div class="form-group">
+                            <label for="proposal-title">Título de la Ley</label>
+                            <input type="text" id="proposal-title" required maxlength="200">
+                        </div>
+                        <div class="form-group">
+                            <label for="proposal-description">Descripción Completa</label>
+                            <textarea id="proposal-description" required rows="10"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Publicar Propuesta</button>
+                    </form>
+                    <div id="proposal-message" class="message"></div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles de la ley -->
+    <div id="law-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

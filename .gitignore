@@ -1,0 +1,32 @@
+# Ignore data directory (contains user data and votes)
+data/
+data/*
+*.json
+
+# Ignore configuration file (contains credentials)
+config.php
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore logs
+*.log
+error_log
+
+# Ignore temporary files
+*.tmp
+*.temp
+*~
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore backup files
+*.bak
+*.backup
+

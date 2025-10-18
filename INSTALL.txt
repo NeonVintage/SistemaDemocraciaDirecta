@@ -1,0 +1,264 @@
+=====================================================
+SISTEMA DEMOCRACIA DIRECTA ARGENTINA
+Guía de Instalación Completa
+=====================================================
+
+PASO 1: SUBIR ARCHIVOS
+-----------------------
+1. Descarga todos los archivos del sistema
+2. Sube todos los archivos a tu servidor web
+   - Puede ser: public_html, www, htdocs, etc.
+3. Asegúrate de mantener la estructura de archivos
+
+PASO 2: CONFIGURAR EMAIL (⚠️ REQUERIDO)
+----------------------------------------
+El sistema NECESITA un servidor SMTP para enviar emails
+de verificación. Sin esto, NO funcionará.
+
+1. Copia el archivo de configuración:
+   - En Linux/Mac: cp config.example.php config.php
+   - En Windows: Copia config.example.php y renómbralo a config.php
+
+2. Edita config.php con tu editor de texto favorito
+
+3. Configura tus credenciales SMTP:
+
+   EJEMPLO PARA GMAIL:
+   ─────────────────────────────────────────────────
+   define('SMTP_HOST', 'smtp.gmail.com');
+   define('SMTP_PORT', 587);
+   define('SMTP_USERNAME', 'tu-email@gmail.com');
+   define('SMTP_PASSWORD', 'tu-contraseña-aplicacion');
+   define('SMTP_FROM_EMAIL', 'tu-email@gmail.com');
+   define('SMTP_FROM_NAME', 'Sistema Democracia');
+   define('SITE_URL', 'https://tudominio.com');
+   
+   ⚠️ Gmail requiere "Contraseña de aplicación":
+   https://myaccount.google.com/apppasswords
+
+   EJEMPLO PARA OUTLOOK:
+   ─────────────────────────────────────────────────
+   define('SMTP_HOST', 'smtp-mail.outlook.com');
+   define('SMTP_PORT', 587);
+   define('SMTP_USERNAME', 'tu-email@outlook.com');
+   define('SMTP_PASSWORD', 'tu-contraseña');
+   define('SMTP_FROM_EMAIL', 'tu-email@outlook.com');
+   define('SMTP_FROM_NAME', 'Sistema Democracia');
+   define('SITE_URL', 'https://tudominio.com');
+
+   EJEMPLO PARA HOSTING/cPanel:
+   ─────────────────────────────────────────────────
+   define('SMTP_HOST', 'mail.tudominio.com');
+   define('SMTP_PORT', 25);
+   define('SMTP_USERNAME', 'sistema@tudominio.com');
+   define('SMTP_PASSWORD', 'contraseña-del-email');
+   define('SMTP_FROM_EMAIL', 'sistema@tudominio.com');
+   define('SMTP_FROM_NAME', 'Sistema Democracia');
+   define('SITE_URL', 'https://tudominio.com');
+
+Ver más ejemplos en config.example.php
+
+PASO 3: VERIFICAR REQUISITOS
+-----------------------------
+✓ PHP 7.4 o superior
+✓ Archivo config.php creado y configurado
+✓ Permisos de escritura en el directorio
+
+PASO 4: CONFIGURAR PERMISOS (Linux/Unix)
+-----------------------------------------
+Si estás en Linux, ejecuta estos comandos:
+
+chmod 755 .
+chmod 644 *.php
+chmod 644 *.html
+chmod 644 *.js
+chmod 644 *.css
+
+El directorio data/ se creará automáticamente.
+
+PASO 5: ACCEDER AL SISTEMA
+---------------------------
+1. Abre tu navegador
+2. Navega a: http://tudominio.com/index.html
+3. Regístrate con tu email
+4. Revisa tu correo para verificar la cuenta
+5. ¡Listo para usar!
+
+=====================================================
+SOLUCIÓN DE PROBLEMAS
+=====================================================
+
+Problema: "Error: config.php no encontrado"
+───────────────────────────────────────────
+Solución: 
+- Copia config.example.php a config.php
+- Asegúrate de que esté en el mismo directorio
+  que api.php
+
+Problema: "Error de conexión. Intente nuevamente"
+──────────────────────────────────────────────────
+Solución:
+1. Verifica que config.php exista
+2. Accede a: http://tudominio.com/check-php.php
+3. Accede a: http://tudominio.com/debug-api.php
+4. Revisa qué tests fallan
+
+Problema: No llegan los emails de verificación
+───────────────────────────────────────────────
+Solución:
+1. Verifica credenciales en config.php
+2. Para Gmail: usa "Contraseña de aplicación"
+3. Prueba con puerto 587 en lugar de 25
+4. Revisa spam/correo no deseado
+5. Consulta el error_log de PHP
+
+Problema: Error 500 en api.php
+───────────────────────────────
+Solución:
+1. Verifica versión de PHP (debe ser 7.4+)
+2. Revisa permisos de archivos
+3. Accede a debug-api.php para ver detalles
+4. Revisa el error_log del servidor
+
+Problema: No se crean archivos JSON
+────────────────────────────────────
+Solución:
+- Verifica permisos de escritura
+- Temporalmente: chmod 777 . (para probar)
+- Luego vuelve a: chmod 755 .
+
+=====================================================
+PROVEEDORES SMTP RECOMENDADOS (GRATIS)
+=====================================================
+
+Gmail
+─────
+- 500 emails por día
+- Puerto: 587
+- Requiere contraseña de aplicación
+- Configuración: Ver ejemplo arriba
+
+Outlook/Hotmail
+────────────────
+- 300 emails por día
+- Puerto: 587
+- Usa contraseña normal
+- Configuración: Ver ejemplo arriba
+
+SendGrid
+────────
+- 100 emails por día (gratis)
+- Puerto: 587
+- Requiere registro en sendgrid.com
+- Host: smtp.sendgrid.net
+
+Mailgun
+───────
+- 5000 emails primer mes (gratis)
+- Puerto: 587
+- Requiere registro en mailgun.com
+- Host: smtp.mailgun.org
+
+=====================================================
+VERIFICACIÓN MANUAL DE USUARIOS
+=====================================================
+
+Si los emails no funcionan temporalmente:
+
+1. El usuario se registra en el sistema
+2. Se crea en data/users.json con verified: false
+3. Edita data/users.json manualmente:
+   Busca el usuario y cambia:
+   "verified": false → "verified": true
+4. Guarda el archivo
+5. El usuario ya puede iniciar sesión
+
+⚠️ Esto es solo temporal para pruebas
+
+=====================================================
+ARCHIVOS DE DIAGNÓSTICO
+=====================================================
+
+check-php.php
+─────────────
+Verifica que PHP funcione correctamente
+Muestra versión, permisos, etc.
+
+debug-api.php
+─────────────
+Prueba todos los componentes del sistema
+Identifica qué está fallando
+
+api-simple.php
+──────────────
+Versión simple del API para testing
+Muestra errores de PHP directamente
+
+test-manual.php
+───────────────
+Panel completo de pruebas
+Permite crear usuarios de prueba
+⚠️ ELIMINAR EN PRODUCCIÓN
+
+=====================================================
+ESTRUCTURA DESPUÉS DE LA INSTALACIÓN
+=====================================================
+
+democracy/
+├── index.html              ← Página de login
+├── dashboard.html          ← Panel principal
+├── verify.php              ← Verificación email
+├── api.php                 ← Backend API
+├── config.php              ← ⚠️ TU CONFIGURACIÓN
+├── config.example.php      ← Ejemplo
+├── auth.js                 ← JavaScript auth
+├── app.js                  ← JavaScript dashboard
+├── styles.css              ← Estilos
+├── .htaccess              ← Seguridad
+├── data/                   ← Se crea automáticamente
+│   ├── users.json
+│   ├── laws.json
+│   ├── comments/
+│   └── votes/
+└── README.md               ← Documentación
+
+=====================================================
+CONFIGURACIÓN ADICIONAL (OPCIONAL)
+=====================================================
+
+Puedes ajustar estos valores en config.php:
+
+Criterios de Votación:
+──────────────────────
+VOTING_MIN_VOTES     → Votos mínimos (default: 10)
+APPROVAL_THRESHOLD   → % para aprobar (default: 60)
+REJECTION_THRESHOLD  → % para rechazar (default: 40)
+
+Seguridad:
+──────────
+SESSION_TIMEOUT      → Tiempo de sesión (default: 3600)
+PASSWORD_MIN_LENGTH  → Longitud mínima password (default: 6)
+
+=====================================================
+SOPORTE
+=====================================================
+
+GitHub: [tu-repositorio]
+Email: [tu-email]
+
+Documentación completa: README.md
+Guía en español: LEEME.txt
+
+=====================================================
+¡IMPORTANTE!
+=====================================================
+
+1. NO subas config.php a repositorios públicos
+2. Mantén copias de seguridad de data/
+3. Elimina test-manual.php en producción
+4. Usa HTTPS en producción (no HTTP)
+5. Cambia las contraseñas predeterminadas
+
+=====================================================
+¡Gracias por usar Sistema Democracia Directa!
+=====================================================

@@ -1,0 +1,267 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║        ✨ NUEVA CARACTERÍSTICA: EMAILS ENCRIPTADOS ✨            ║
+║           Sistema Democracia Directa Argentina                   ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════
+🎉 ¿QUÉ ES NUEVO?
+═══════════════════════════════════════════════════════════════════
+
+Ahora los emails de los usuarios se almacenan ENCRIPTADOS en el
+archivo users.json, igual que las contraseñas.
+
+Esto protege la privacidad de los usuarios sin afectar la
+funcionalidad del sistema de confirmación por email.
+
+═══════════════════════════════════════════════════════════════════
+🔐 CÓMO FUNCIONA
+═══════════════════════════════════════════════════════════════════
+
+REGISTRO:
+─────────
+usuario@ejemplo.com
+         ↓
+  [Encriptación AES-256-CBC]
+         ↓
+"Y2RiM3N3ZGV3ZGV3ZGV3..." ← Almacenado en JSON
+         +
+"a7f9c3e2d1b4a8f6e5..." ← Hash SHA-256 para búsquedas
+
+LOGIN:
+──────
+Usuario ingresa: usuario@ejemplo.com
+         ↓
+Sistema calcula: SHA-256 del email
+         ↓
+Busca por hash en users.json
+         ↓
+Si coincide → Desencripta email para enviar correos
+
+═══════════════════════════════════════════════════════════════════
+✅ VENTAJAS
+═══════════════════════════════════════════════════════════════════
+
+✓ PRIVACIDAD: Nadie puede leer emails del JSON sin la clave
+✓ SEGURIDAD: AES-256-CBC es cifrado de grado militar
+✓ FUNCIONALIDAD: Sistema de emails sigue funcionando 100%
+✓ BÚSQUEDAS: Hash SHA-256 permite buscar sin desencriptar
+✓ COMPATIBLE: Soporta formato antiguo y nuevo
+
+═══════════════════════════════════════════════════════════════════
+⚙️ CONFIGURACIÓN REQUERIDA
+═══════════════════════════════════════════════════════════════════
+
+En config.php agrega:
+
+define('ENCRYPTION_KEY', 'tu-clave-unica-de-32-caracteres');
+
+GENERAR CLAVE:
+──────────────
+Linux/Mac:  openssl rand -base64 32
+PHP:        bin2hex(random_bytes(32))
+Online:     https://www.random.org/strings/
+
+EJEMPLO DE CLAVE:
+─────────────────
+a7f9c3e2d1b4a8f6e5d9c3b7a2f8e1d4c6b9a3f7e2d5c8b4a1f6e9d3c7b2a5
+
+⚠️ IMPORTANTE:
+   - Usa una clave ÚNICA para tu instalación
+   - NO uses el ejemplo
+   - NO pierdas esta clave (guárdala bien)
+   - NO la subas a Git (ya está en .gitignore)
+
+═══════════════════════════════════════════════════════════════════
+📂 ESTRUCTURA DEL JSON
+═══════════════════════════════════════════════════════════════════
+
+ANTES:
+──────
+{
+    "id": "abc123",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "email": "juan@ejemplo.com",        ← Email visible ✗
+    "password": "$2y$10$hashed..."
+}
+
+AHORA:
+──────
+{
+    "id": "abc123",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "email_encrypted": "Y2RiM3N3ZGV...",  ← Encriptado ✓
+    "email_hash": "a7f9c3e2d1b4a8...",    ← Hash ✓
+    "password": "$2y$10$hashed..."
+}
+
+═══════════════════════════════════════════════════════════════════
+🔄 RETROCOMPATIBILIDAD
+═══════════════════════════════════════════════════════════════════
+
+✓ Usuarios antiguos (con email en texto plano) seguirán funcionando
+✓ Login funciona con ambos formatos
+✓ Nuevos registros usan formato encriptado automáticamente
+✓ Migración opcional disponible (migrate-emails.php)
+
+═══════════════════════════════════════════════════════════════════
+🚀 INSTALACIÓN NUEVA
+═══════════════════════════════════════════════════════════════════
+
+Si instalas el sistema por primera vez:
+
+1. Copia config.example.php a config.php
+2. Configura SMTP (host, puerto, usuario, password)
+3. Genera y configura ENCRYPTION_KEY
+4. Sube al servidor
+5. ¡Listo! Los emails se encriptarán automáticamente
+
+═══════════════════════════════════════════════════════════════════
+🔄 MIGRACIÓN DESDE VERSIÓN ANTERIOR
+═══════════════════════════════════════════════════════════════════
+
+Si ya tienes usuarios registrados:
+
+OPCIÓN 1 - Automática (Recomendada):
+────────────────────────────────────
+1. Actualiza todos los archivos
+2. Agrega ENCRYPTION_KEY en config.php
+3. Los usuarios existentes seguirán funcionando
+4. Nuevos registros usarán formato encriptado
+5. Gradualmente todos se migrarán
+
+OPCIÓN 2 - Manual (Opcional):
+──────────────────────────────
+1. Haz backup de data/users.json
+2. Configura ENCRYPTION_KEY en config.php
+3. Ejecuta: php migrate-emails.php
+4. Verifica que funcione
+5. Borra migrate-emails.php
+
+═══════════════════════════════════════════════════════════════════
+📋 ARCHIVOS MODIFICADOS
+═══════════════════════════════════════════════════════════════════
+
+✓ api.php
+  - Funciones de encriptación/desencriptación
+  - Soporte para email_encrypted y email_hash
+  - Retrocompatibilidad con formato antiguo
+
+✓ config.example.php
+  - Nueva constante ENCRYPTION_KEY
+
+✓ README.md
+  - Documentación de seguridad actualizada
+
+✓ LEEME.txt
+  - Sección de seguridad expandida
+
+✓ CONFIGURACION.txt
+  - Instrucciones para ENCRYPTION_KEY
+
+═══════════════════════════════════════════════════════════════════
+📄 ARCHIVOS NUEVOS
+═══════════════════════════════════════════════════════════════════
+
+✓ SEGURIDAD-EMAILS.txt
+  - Documentación completa de la característica
+  - Detalles técnicos
+  - Mejores prácticas
+
+✓ migrate-emails.php
+  - Script de migración opcional
+  - Convierte emails antiguos a formato encriptado
+
+✓ NUEVA-CARACTERISTICA-EMAILS-ENCRIPTADOS.txt
+  - Este archivo (resumen de la característica)
+
+═══════════════════════════════════════════════════════════════════
+🧪 VERIFICAR QUE FUNCIONA
+═══════════════════════════════════════════════════════════════════
+
+1. Configura ENCRYPTION_KEY en config.php
+2. Regístrate con un nuevo usuario
+3. Abre data/users.json con un editor
+4. Verifica que veas:
+   ✓ "email_encrypted": "string largo base64..."
+   ✓ "email_hash": "string de 64 caracteres hex..."
+   ✗ NO "email": "texto-plano@ejemplo.com"
+5. Prueba hacer login → Debe funcionar
+6. Debes recibir email de verificación → Debe llegar
+7. Haz click en el enlace → Cuenta verificada
+8. Inicia sesión → Todo funciona normal
+
+═══════════════════════════════════════════════════════════════════
+🔐 SEGURIDAD MEJORADA
+═══════════════════════════════════════════════════════════════════
+
+NIVEL DE PROTECCIÓN:
+
+Contraseñas:  ████████████████████ bcrypt (fuerte)
+Emails:       ████████████████████ AES-256 (fuerte)
+Búsquedas:    ████████████████████ SHA-256 (fuerte)
+Sesiones:     ████████████████████ PHP sessions (estándar)
+
+COMPARACIÓN:
+
+┌──────────────────────┬────────────┬─────────────────┐
+│                      │ ANTES      │ AHORA           │
+├──────────────────────┼────────────┼─────────────────┤
+│ Passwords            │ ✓ Seguros  │ ✓ Seguros       │
+│ Emails               │ ✗ Visibles │ ✓ Encriptados   │
+│ Privacidad           │ ⚠ Media    │ ✓ Alta          │
+│ Cumple GDPR          │ ⚠ Parcial  │ ✓ Mejor         │
+└──────────────────────┴────────────┴─────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+⚠️ ADVERTENCIAS
+═══════════════════════════════════════════════════════════════════
+
+1. NO PIERDAS LA CLAVE
+   Sin ENCRYPTION_KEY no podrás desencriptar emails
+   
+2. NO CAMBIES LA CLAVE
+   Si cambias ENCRYPTION_KEY, emails antiguos no se desencriptarán
+   
+3. HAZ BACKUPS
+   Incluye config.php (con la clave) en tus backups
+   
+4. NO SUBAS A GIT
+   config.php ya está en .gitignore, pero verifica
+
+═══════════════════════════════════════════════════════════════════
+📚 MÁS INFORMACIÓN
+═══════════════════════════════════════════════════════════════════
+
+Documentación completa:      SEGURIDAD-EMAILS.txt
+Script de migración:         migrate-emails.php
+Configuración general:       CONFIGURACION.txt
+README principal:            README.md
+Guía en español:            LEEME.txt
+
+═══════════════════════════════════════════════════════════════════
+✨ RESUMEN
+═══════════════════════════════════════════════════════════════════
+
+Esta característica añade una capa extra de seguridad y privacidad
+al sistema, encriptando los emails de los usuarios mientras mantiene
+toda la funcionalidad del sistema de confirmación por email.
+
+ACCIÓN REQUERIDA:
+─────────────────
+Genera y configura ENCRYPTION_KEY en config.php antes de usar
+
+BENEFICIOS:
+───────────
+✓ Mayor privacidad
+✓ Mejor seguridad
+✓ Cumplimiento normativo
+✓ Sin pérdida de funcionalidad
+
+═══════════════════════════════════════════════════════════════════
+¡Gracias por usar código libre con privacidad mejorada! 🎉
+═══════════════════════════════════════════════════════════════════
+

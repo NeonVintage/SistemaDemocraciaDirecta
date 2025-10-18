@@ -1,0 +1,262 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║           GUÍA DE CONFIGURACIÓN - CÓDIGO LIBRE                   ║
+║           Sistema Democracia Directa Argentina                   ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════
+ 📧 CONFIGURACIÓN DE EMAIL (REQUERIDA)
+═══════════════════════════════════════════════════════════════════
+
+El sistema ahora es de CÓDIGO LIBRE y NO incluye credenciales.
+
+Debes configurar tu propio servidor de email antes de usar el sistema.
+
+───────────────────────────────────────────────────────────────────
+PASO 1: Crear archivo de configuración
+───────────────────────────────────────────────────────────────────
+
+Copia el archivo de ejemplo:
+
+  Windows:
+  Copia "config.example.php" y renómbralo a "config.php"
+
+  Linux/Mac:
+  cp config.example.php config.php
+
+───────────────────────────────────────────────────────────────────
+PASO 2: Editar config.php
+───────────────────────────────────────────────────────────────────
+
+Abre config.php con tu editor de texto y configura:
+
+1. SMTP_HOST       → Servidor SMTP (ej: smtp.gmail.com)
+2. SMTP_PORT       → Puerto (25, 465, 587)
+3. SMTP_USERNAME   → Tu email completo
+4. SMTP_PASSWORD   → Tu contraseña de email
+5. SMTP_FROM_EMAIL → Email que aparecerá como remitente
+6. SMTP_FROM_NAME  → Nombre del remitente
+7. SITE_URL        → URL completa de tu sitio
+
+───────────────────────────────────────────────────────────────────
+PASO 3: Elegir proveedor SMTP
+───────────────────────────────────────────────────────────────────
+
+Tienes varias opciones gratuitas:
+
+╔═══════════════════════════════════════════════════════════════╗
+║ GMAIL (Recomendado para pruebas)                             ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Límite: 500 emails por día (gratis)
+
+Configuración:
+  define('SMTP_HOST', 'smtp.gmail.com');
+  define('SMTP_PORT', 587);
+  define('SMTP_USERNAME', 'tu-email@gmail.com');
+  define('SMTP_PASSWORD', 'contraseña-de-aplicacion');
+  define('SMTP_FROM_EMAIL', 'tu-email@gmail.com');
+
+⚠️ IMPORTANTE: Gmail requiere "Contraseña de aplicación"
+   
+   Pasos:
+   1. Ve a: https://myaccount.google.com/security
+   2. Activa "Verificación en 2 pasos"
+   3. Ve a: https://myaccount.google.com/apppasswords
+   4. Genera una contraseña de aplicación
+   5. Usa esa contraseña en SMTP_PASSWORD
+
+╔═══════════════════════════════════════════════════════════════╗
+║ OUTLOOK / HOTMAIL                                             ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Límite: 300 emails por día (gratis)
+
+Configuración:
+  define('SMTP_HOST', 'smtp-mail.outlook.com');
+  define('SMTP_PORT', 587);
+  define('SMTP_USERNAME', 'tu-email@outlook.com');
+  define('SMTP_PASSWORD', 'tu-contraseña');
+  define('SMTP_FROM_EMAIL', 'tu-email@outlook.com');
+
+✓ Usa tu contraseña normal de Outlook
+
+╔═══════════════════════════════════════════════════════════════╗
+║ HOSTING / cPanel (Si tienes dominio propio)                  ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Configuración:
+  define('SMTP_HOST', 'mail.tudominio.com');
+  define('SMTP_PORT', 25);
+  define('SMTP_USERNAME', 'sistema@tudominio.com');
+  define('SMTP_PASSWORD', 'contraseña-del-email');
+  define('SMTP_FROM_EMAIL', 'sistema@tudominio.com');
+
+✓ Usa las credenciales de un email que hayas creado en tu cPanel
+
+╔═══════════════════════════════════════════════════════════════╗
+║ SENDGRID (Profesional - Gratis hasta 100/día)                ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Límite: 100 emails por día (gratis)
+
+Pasos:
+1. Regístrate en: https://sendgrid.com
+2. Crea una API Key
+3. Configura:
+
+  define('SMTP_HOST', 'smtp.sendgrid.net');
+  define('SMTP_PORT', 587);
+  define('SMTP_USERNAME', 'apikey');
+  define('SMTP_PASSWORD', 'SG.tu-api-key-aqui');
+  define('SMTP_FROM_EMAIL', 'sistema@tudominio.com');
+
+╔═══════════════════════════════════════════════════════════════╗
+║ MAILGUN (Profesional - 5000 emails/mes gratis)               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Límite: 5000 emails/mes primer mes (gratis)
+
+Pasos:
+1. Regístrate en: https://mailgun.com
+2. Obtén credenciales SMTP
+3. Configura:
+
+  define('SMTP_HOST', 'smtp.mailgun.org');
+  define('SMTP_PORT', 587);
+  define('SMTP_USERNAME', 'postmaster@tudominio.mailgun.org');
+  define('SMTP_PASSWORD', 'tu-contraseña-mailgun');
+  define('SMTP_FROM_EMAIL', 'sistema@tudominio.com');
+
+═══════════════════════════════════════════════════════════════════
+ ⚙️ CONFIGURACIÓN ADICIONAL
+═══════════════════════════════════════════════════════════════════
+
+Además del email, puedes configurar:
+
+───────────────────────────────────────────────────────────────────
+URL del Sitio
+───────────────────────────────────────────────────────────────────
+
+define('SITE_URL', 'https://tudominio.com');
+
+O si está en un subdirectorio:
+define('SITE_URL', 'https://tudominio.com/democracia');
+
+⚠️ Sin barra al final
+
+───────────────────────────────────────────────────────────────────
+Criterios de Votación
+───────────────────────────────────────────────────────────────────
+
+// Votos mínimos para determinar resultado
+define('VOTING_MIN_VOTES', 10);
+
+// Porcentaje para aprobar una ley
+define('APPROVAL_THRESHOLD', 60);
+
+// Porcentaje para rechazar una ley
+define('REJECTION_THRESHOLD', 40);
+
+Ejemplo: Con 100 votos y 70 a favor (70%):
+- Como 70% >= 60% → La ley se APRUEBA
+
+───────────────────────────────────────────────────────────────────
+Seguridad
+───────────────────────────────────────────────────────────────────
+
+// Clave de encriptación (IMPORTANTE - genera una única)
+define('ENCRYPTION_KEY', 'tu-clave-aleatoria-de-32-caracteres');
+
+⚠️ GENERA UNA CLAVE ÚNICA:
+   En Linux/Mac: openssl rand -base64 32
+   En PHP: bin2hex(random_bytes(32))
+   Online: https://www.random.org/strings/
+
+// Tiempo de sesión en segundos
+define('SESSION_TIMEOUT', 3600);  // 1 hora
+
+// Longitud mínima de contraseña
+define('PASSWORD_MIN_LENGTH', 6);
+
+═══════════════════════════════════════════════════════════════════
+ 🧪 PROBAR LA CONFIGURACIÓN
+═══════════════════════════════════════════════════════════════════
+
+Después de configurar:
+
+1. Accede a: http://tudominio.com/check-php.php
+   → Verifica que PHP funcione
+
+2. Accede a: http://tudominio.com/debug-api.php
+   → Verifica que todos los componentes funcionen
+
+3. Prueba registrarte en: http://tudominio.com/index.html
+   → Deberías recibir un email de verificación
+
+═══════════════════════════════════════════════════════════════════
+ ❌ SOLUCIÓN DE PROBLEMAS
+═══════════════════════════════════════════════════════════════════
+
+Error: "config.php no encontrado"
+──────────────────────────────────
+→ No copiaste config.example.php a config.php
+→ Solución: Copia el archivo
+
+Error: No llegan emails
+────────────────────────
+→ Credenciales incorrectas
+→ Puerto incorrecto
+→ Para Gmail: ¿Usaste contraseña de aplicación?
+→ Revisa spam/correo no deseado
+
+Error: "Error de conexión"
+───────────────────────────
+→ api.php no puede ejecutarse
+→ Accede a debug-api.php para ver detalles
+
+═══════════════════════════════════════════════════════════════════
+ 🔒 SEGURIDAD
+═══════════════════════════════════════════════════════════════════
+
+⚠️ IMPORTANTE:
+
+1. NO subas config.php a repositorios públicos
+   → .gitignore ya lo excluye
+
+2. NO compartas tus credenciales SMTP
+
+3. Usa HTTPS en producción (no HTTP)
+
+4. Cambia contraseñas regularmente
+
+5. Haz backups del directorio data/
+
+═══════════════════════════════════════════════════════════════════
+ 📋 CHECKLIST DE CONFIGURACIÓN
+═══════════════════════════════════════════════════════════════════
+
+□ Copiaste config.example.php a config.php
+□ Configuraste SMTP_HOST
+□ Configuraste SMTP_PORT
+□ Configuraste SMTP_USERNAME
+□ Configuraste SMTP_PASSWORD
+□ Configuraste SMTP_FROM_EMAIL
+□ Configuraste SITE_URL
+□ Configuraste ENCRYPTION_KEY (clave única de 32+ caracteres)
+□ Probaste en check-php.php
+□ Probaste en debug-api.php
+□ Probaste registrarte y recibiste el email
+
+🔐 NOTA SOBRE ENCRYPTION_KEY:
+    Esta clave se usa para encriptar emails en el JSON.
+    Sin ella, no podrás desencriptar emails para enviar.
+    Ver: SEGURIDAD-EMAILS.txt
+
+═══════════════════════════════════════════════════════════════════
+
+Si completaste todo el checklist, ¡el sistema está listo!
+
+═══════════════════════════════════════════════════════════════════
+

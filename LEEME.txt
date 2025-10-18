@@ -1,0 +1,290 @@
+═══════════════════════════════════════════════════════════════
+    SISTEMA DEMOCRACIA DIRECTA ARGENTINA - VERSIÓN BETA
+═══════════════════════════════════════════════════════════════
+
+¡SISTEMA COMPLETADO Y LISTO PARA USAR!
+
+═══════════════════════════════════════════════════════════════
+📋 RESUMEN DEL SISTEMA
+═══════════════════════════════════════════════════════════════
+
+✅ Sistema web HTML5 completo
+✅ Sin Node.js - Solo PHP
+✅ Sin base de datos - Solo archivos JSON
+✅ Funciona inmediatamente al subirlo al servidor
+✅ Diseño moderno y responsive
+✅ Sistema de votación de democracia directa
+✅ Confirmación de cuenta por email
+
+═══════════════════════════════════════════════════════════════
+📁 ARCHIVOS CREADOS
+═══════════════════════════════════════════════════════════════
+
+PÁGINAS PRINCIPALES:
+  ✓ index.html           - Login y registro
+  ✓ dashboard.html       - Panel principal del sistema
+  ✓ verify.php          - Verificación de cuentas por email
+  ✓ index.php           - Redirección automática
+
+BACKEND:
+  ✓ api.php             - API completa del sistema
+                          * Registro de usuarios
+                          * Autenticación
+                          * Gestión de leyes
+                          * Sistema de votación
+                          * Comentarios con votación
+                          * Envío de emails
+
+FRONTEND:
+  ✓ auth.js             - JavaScript para login/registro
+  ✓ app.js              - JavaScript del dashboard
+  ✓ styles.css          - Estilos modernos y responsive
+
+CONFIGURACIÓN:
+  ✓ .htaccess           - Seguridad y protección de datos
+  ✓ .gitignore          - Protección de datos sensibles
+  ✓ config.example.php  - Ejemplo de configuración
+
+DOCUMENTACIÓN:
+  ✓ README.md           - Documentación completa
+  ✓ INSTALL.txt         - Guía de instalación paso a paso
+  ✓ LEEME.txt           - Este archivo
+
+HERRAMIENTAS:
+  ✓ test-manual.php     - Panel de pruebas (eliminar en producción)
+
+═══════════════════════════════════════════════════════════════
+🚀 INSTALACIÓN RÁPIDA
+═══════════════════════════════════════════════════════════════
+
+1. SUBE todos los archivos a tu servidor web
+2. CONFIGURA email: copia config.example.php a config.php y edítalo
+3. ASEGÚRATE de que PHP esté habilitado (7.4+)
+4. VERIFICA que el servidor pueda crear carpetas
+5. ACCEDE a: http://tudominio.com/index.html
+6. ¡LISTO! El sistema funcionará inmediatamente
+
+NOTA: El directorio data/ se crea automáticamente
+⚠️ IMPORTANTE: Sin config.php el sistema NO funcionará
+
+═══════════════════════════════════════════════════════════════
+🎯 FUNCIONALIDADES IMPLEMENTADAS
+═══════════════════════════════════════════════════════════════
+
+✅ REGISTRO DE USUARIOS
+   - Nombre, apellido, email
+   - Contraseña encriptada
+   - Verificación por email
+   - Almacenamiento en JSON
+
+✅ LOGIN SEGURO
+   - Validación de credenciales
+   - Sesiones PHP
+   - Protección contra acceso no autorizado
+
+✅ PROPUESTA DE LEYES
+   - Cualquier usuario puede proponer
+   - Título y descripción completa
+   - Fecha y autor registrados
+
+✅ VOTACIÓN
+   - Voto a favor o en contra
+   - Un voto por usuario por ley
+   - Contador en tiempo real
+   - Cálculo de porcentaje
+
+✅ SISTEMA DE COMENTARIOS
+   - Comentarios por cada ley
+   - Votación de comentarios (upvote/downvote)
+   - Ordenamiento por popularidad
+   - Los más votados arriba
+
+✅ CATEGORIZACIÓN DE LEYES
+   - Leyes Propuestas (en votación)
+   - Leyes Aprobadas (60%+ a favor con 10+ votos)
+   - Leyes Rechazadas (40%- a favor con 10+ votos)
+
+✅ INTERFAZ MODERNA
+   - Diseño responsive (móvil y desktop)
+   - Colores modernos
+   - Animaciones suaves
+   - Fácil de usar
+
+═══════════════════════════════════════════════════════════════
+📧 CONFIGURACIÓN DE EMAIL (REQUERIDO)
+═══════════════════════════════════════════════════════════════
+
+⚠️ IMPORTANTE: Debes configurar el email antes de usar el sistema
+
+PASO 1: Copia el archivo de configuración
+  cp config.example.php config.php
+
+PASO 2: Edita config.php con tus credenciales SMTP
+
+EJEMPLOS DE CONFIGURACIÓN:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Gmail (Gratis - 500 emails/día):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_PORT', 587);
+define('SMTP_USERNAME', 'tu-email@gmail.com');
+define('SMTP_PASSWORD', 'tu-contraseña-de-aplicacion');
+define('SMTP_FROM_EMAIL', 'tu-email@gmail.com');
+
+⚠️ Usa "Contraseña de aplicación", NO tu contraseña normal
+   Crear en: https://myaccount.google.com/apppasswords
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Outlook/Hotmail (Gratis - 300 emails/día):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+define('SMTP_HOST', 'smtp-mail.outlook.com');
+define('SMTP_PORT', 587);
+define('SMTP_USERNAME', 'tu-email@outlook.com');
+define('SMTP_PASSWORD', 'tu-contraseña');
+define('SMTP_FROM_EMAIL', 'tu-email@outlook.com');
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cPanel/Hosting compartido:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+define('SMTP_HOST', 'mail.tudominio.com');
+define('SMTP_PORT', 25);
+define('SMTP_USERNAME', 'sistema@tudominio.com');
+define('SMTP_PASSWORD', 'contraseña-del-email');
+define('SMTP_FROM_EMAIL', 'sistema@tudominio.com');
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PASO 3: Configura la URL de tu sitio
+  define('SITE_URL', 'https://tudominio.com');
+
+Ver más ejemplos en config.example.php (SendGrid, Mailgun, AWS SES, etc.)
+
+El sistema envía automáticamente emails de verificación cuando
+alguien se registra.
+
+═══════════════════════════════════════════════════════════════
+🧪 PRUEBAS
+═══════════════════════════════════════════════════════════════
+
+Para probar el sistema rápidamente:
+
+1. Accede a: http://tudominio.com/test-manual.php
+2. Haz click en "Crear Usuario de Prueba"
+3. Ve a index.html e inicia sesión con:
+   Email: prueba@test.com
+   Contraseña: prueba123
+4. Prueba crear leyes, votar y comentar
+
+⚠️ IMPORTANTE: Elimina test-manual.php en producción
+
+═══════════════════════════════════════════════════════════════
+🔒 SEGURIDAD
+═══════════════════════════════════════════════════════════════
+
+✅ Emails encriptados (AES-256-CBC) en el almacenamiento JSON
+✅ Email hashing (SHA-256) para búsquedas sin exponer datos
+✅ Contraseñas hasheadas con password_hash() de PHP
+✅ Directorio data/ protegido con .htaccess
+✅ Validación de sesiones en cada petición
+✅ Protección contra XSS
+✅ Headers de seguridad configurados
+✅ Archivos JSON no accesibles desde navegador
+✅ Clave de encriptación no se sube a Git (.gitignore)
+
+📄 Más detalles: Ver SEGURIDAD-EMAILS.txt
+
+═══════════════════════════════════════════════════════════════
+📊 ESTRUCTURA DE DATOS
+═══════════════════════════════════════════════════════════════
+
+El sistema crea automáticamente:
+
+data/
+├── users.json              - Todos los usuarios
+├── laws.json               - Todas las leyes
+├── comments/
+│   └── [law_id].json      - Comentarios por ley
+└── votes/
+    ├── law_[id].json      - Votos de leyes
+    └── comment_[id].json  - Votos de comentarios
+
+═══════════════════════════════════════════════════════════════
+💡 CRITERIOS DE APROBACIÓN
+═══════════════════════════════════════════════════════════════
+
+Una ley se considera:
+
+APROBADA cuando:
+  - Tiene 10 o más votos totales
+  - Y el 60% o más votaron a favor
+
+RECHAZADA cuando:
+  - Tiene 10 o más votos totales
+  - Y el 40% o menos votaron a favor
+
+PROPUESTA cuando:
+  - Tiene menos de 10 votos
+  - O el porcentaje está entre 40% y 60%
+
+═══════════════════════════════════════════════════════════════
+🎨 CARACTERÍSTICAS DE DISEÑO
+═══════════════════════════════════════════════════════════════
+
+✓ Gradiente moderno en la página de login
+✓ Paleta de colores profesional
+✓ Iconos visuales para mejor UX
+✓ Tarjetas con sombras y efectos hover
+✓ Responsive: se adapta a móvil y desktop
+✓ Animaciones suaves en transiciones
+✓ Modal elegante para detalles de leyes
+✓ Formularios con validación visual
+
+═══════════════════════════════════════════════════════════════
+📱 COMPATIBILIDAD
+═══════════════════════════════════════════════════════════════
+
+✅ Chrome, Firefox, Safari, Edge
+✅ Móviles (iOS y Android)
+✅ Tablets
+✅ Cualquier servidor con PHP 7.4+
+✅ Hosting compartido compatible
+✅ No requiere VPS ni configuración especial
+
+═══════════════════════════════════════════════════════════════
+🆘 SOPORTE Y AYUDA
+═══════════════════════════════════════════════════════════════
+
+Si tienes problemas:
+
+1. Lee INSTALL.txt para instalación paso a paso
+2. Revisa README.md para documentación completa
+3. Usa test-manual.php para diagnóstico
+4. Contacta: sistemademocraciadirecta@neonvintage.com.ar
+
+═══════════════════════════════════════════════════════════════
+⚠️ RECORDATORIOS IMPORTANTES
+═══════════════════════════════════════════════════════════════
+
+1. Este es un sistema BETA - No uses datos reales
+2. La versión final usará autenticación MiArgentina
+3. ELIMINA test-manual.php en producción
+4. Haz backups regulares del directorio data/
+5. No modifiques .htaccess sin conocimiento
+6. Las credenciales SMTP están en el código
+
+═══════════════════════════════════════════════════════════════
+✨ SISTEMA COMPLETO Y FUNCIONAL
+═══════════════════════════════════════════════════════════════
+
+El sistema está 100% completo y listo para usar.
+
+Solo sube los archivos a tu servidor y funcionará
+inmediatamente.
+
+¡Buena suerte con tu sistema de democracia directa!
+
+═══════════════════════════════════════════════════════════════
+Sistema Democracia Directa Argentina © 2024
+═══════════════════════════════════════════════════════════════
+

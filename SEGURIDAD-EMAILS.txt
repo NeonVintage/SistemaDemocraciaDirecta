@@ -1,0 +1,344 @@
+═══════════════════════════════════════════════════════════════════
+   SEGURIDAD: ENCRIPTACIÓN DE EMAILS
+   Sistema Democracia Directa Argentina
+═══════════════════════════════════════════════════════════════════
+
+🔐 NUEVA CARACTERÍSTICA DE SEGURIDAD
+
+═══════════════════════════════════════════════════════════════════
+📋 ¿QUÉ CAMBIÓ?
+═══════════════════════════════════════════════════════════════════
+
+ANTES:
+───────
+En users.json se almacenaba:
+{
+    "id": "abc123",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "email": "juan@ejemplo.com",         ← Email en texto plano
+    "password": "$2y$10$hashed..."       ← Password hasheado
+}
+
+AHORA:
+──────
+En users.json se almacena:
+{
+    "id": "abc123",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "email_encrypted": "base64data...",  ← Email ENCRIPTADO
+    "email_hash": "sha256hash...",       ← Hash para búsquedas
+    "password": "$2y$10$hashed..."       ← Password hasheado
+}
+
+═══════════════════════════════════════════════════════════════════
+🔒 CÓMO FUNCIONA
+═══════════════════════════════════════════════════════════════════
+
+1. REGISTRO
+   ─────────
+   Usuario ingresa: juan@ejemplo.com
+   ↓
+   Sistema crea:
+   - email_encrypted: AES-256-CBC del email (reversible)
+   - email_hash: SHA-256 del email (para búsquedas)
+   ↓
+   Se almacena en users.json:
+   - email_encrypted (solo puede desencriptarse con la clave)
+   - email_hash (para comparar en login)
+   - NO se almacena el email en texto plano
+
+2. LOGIN
+   ───────
+   Usuario ingresa: juan@ejemplo.com
+   ↓
+   Sistema calcula: SHA-256 de "juan@ejemplo.com"
+   ↓
+   Busca en users.json por email_hash
+   ↓
+   Si coincide → Verifica password
+   ↓
+   Login exitoso → Desencripta email para la sesión
+
+3. USO INTERNO
+   ────────────
+   Cuando se necesita enviar email:
+   ↓
+   Sistema desencripta email_encrypted
+   ↓
+   Usa el email desencriptado para enviar
+   ↓
+   Email se envía, pero NUNCA se almacena en texto plano
+
+═══════════════════════════════════════════════════════════════════
+🎯 VENTAJAS DE SEGURIDAD
+═══════════════════════════════════════════════════════════════════
+
+✅ PROTECCIÓN DE PRIVACIDAD
+   Si alguien accede a users.json, NO puede ver los emails
+
+✅ COMPATIBILIDAD
+   El sistema puede seguir enviando emails de verificación
+
+✅ BÚSQUEDAS EFICIENTES
+   email_hash permite buscar usuarios sin desencriptar
+
+✅ RETROCOMPATIBILIDAD
+   Soporta tanto formato antiguo como nuevo
+
+✅ ENCRIPTACIÓN FUERTE
+   AES-256-CBC es estándar militar
+
+═══════════════════════════════════════════════════════════════════
+⚙️ CONFIGURACIÓN
+═══════════════════════════════════════════════════════════════════
+
+En config.php debes configurar una clave de encriptación:
+
+define('ENCRYPTION_KEY', 'tu-clave-aleatoria-de-32-caracteres');
+
+IMPORTANTE:
+───────────
+✓ Usa una clave ÚNICA y ALEATORIA
+✓ Debe tener al menos 32 caracteres
+✓ NO uses la clave de ejemplo
+✓ NO compartas esta clave
+✓ Si pierdes la clave, NO podrás desencriptar emails
+
+GENERAR CLAVE SEGURA:
+─────────────────────
+
+Opción 1 - En línea de comandos (Linux/Mac):
+openssl rand -base64 32
+
+Opción 2 - En PHP:
+<?php echo bin2hex(random_bytes(32)); ?>
+
+Opción 3 - Generador online:
+https://www.random.org/strings/
+
+Ejemplo de clave válida:
+a7f9c3e2d1b4a8f6e5d9c3b7a2f8e1d4c6b9a3f7e2d5c8b4a1f6e9d3c7b2a5
+
+═══════════════════════════════════════════════════════════════════
+🔍 DETALLES TÉCNICOS
+═══════════════════════════════════════════════════════════════════
+
+ENCRIPTACIÓN:
+─────────────
+- Algoritmo: AES-256-CBC
+- Modo: CBC (Cipher Block Chaining)
+- IV: Aleatorio para cada encriptación
+- Formato: base64(encrypted_data::iv)
+
+HASH:
+─────
+- Algoritmo: SHA-256
+- Normalización: lowercase + trim
+- Uso: Búsquedas y comparaciones
+- NO reversible
+
+FUNCIONES PHP:
+──────────────
+encryptData($email)
+  → Encripta el email con AES-256-CBC
+  → Retorna: string base64
+
+decryptData($encrypted)
+  → Desencripta el email
+  → Retorna: string o false
+
+hashEmail($email)
+  → Calcula SHA-256 del email
+  → Retorna: string (64 caracteres hex)
+
+═══════════════════════════════════════════════════════════════════
+📊 COMPARACIÓN DE SEGURIDAD
+═══════════════════════════════════════════════════════════════════
+
+┌────────────────────────┬─────────────┬─────────────────┐
+│ ASPECTO                │ ANTES       │ AHORA           │
+├────────────────────────┼─────────────┼─────────────────┤
+│ Email en JSON          │ ✗ Visible   │ ✓ Encriptado    │
+│ Email hasheado         │ ✗ No        │ ✓ Sí (SHA-256)  │
+│ Password hasheado      │ ✓ Sí        │ ✓ Sí (bcrypt)   │
+│ Puede enviar emails    │ ✓ Sí        │ ✓ Sí            │
+│ Búsqueda por email     │ ✓ Sí        │ ✓ Sí (por hash) │
+│ Protección privacidad  │ ✗ Baja      │ ✓ Alta          │
+└────────────────────────┴─────────────┴─────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+🛡️ ESCENARIOS DE SEGURIDAD
+═══════════════════════════════════════════════════════════════════
+
+ESCENARIO 1: Alguien accede a users.json
+─────────────────────────────────────────
+ANTES: Puede ver todos los emails en texto plano
+AHORA: Solo ve datos encriptados, necesita ENCRYPTION_KEY
+
+ESCENARIO 2: Backup público accidental
+───────────────────────────────────────
+ANTES: Todos los emails expuestos
+AHORA: Emails protegidos por encriptación
+
+ESCENARIO 3: Ataque de lectura de archivos
+───────────────────────────────────────────
+ANTES: Attacker obtiene emails directamente
+AHORA: Attacker necesita también ENCRYPTION_KEY
+
+═══════════════════════════════════════════════════════════════════
+🔄 MIGRACIÓN DE DATOS EXISTENTES
+═══════════════════════════════════════════════════════════════════
+
+Si ya tienes usuarios registrados con el formato antiguo:
+
+RETROCOMPATIBILIDAD AUTOMÁTICA:
+────────────────────────────────
+✓ El sistema detecta automáticamente el formato antiguo
+✓ Puede hacer login con usuarios antiguos
+✓ Gradualmente se migrarán al nuevo formato
+
+MIGRACIÓN MANUAL (Opcional):
+─────────────────────────────
+Crea un archivo: migrate-emails.php
+
+<?php
+require_once 'api.php';
+
+$users = loadUsers();
+$migrated = 0;
+
+foreach ($users as &$user) {
+    // Si tiene email en texto plano
+    if (isset($user['email']) && !isset($user['email_encrypted'])) {
+        $email = $user['email'];
+        $user['email_encrypted'] = encryptData($email);
+        $user['email_hash'] = hashEmail($email);
+        unset($user['email']); // Opcional: remover email plano
+        $migrated++;
+    }
+}
+
+saveUsers($users);
+echo "Migrados: $migrated usuarios";
+?>
+
+Ejecuta una vez y luego bórralo.
+
+═══════════════════════════════════════════════════════════════════
+⚠️ ADVERTENCIAS IMPORTANTES
+═══════════════════════════════════════════════════════════════════
+
+1. CLAVE DE ENCRIPTACIÓN
+   ⚠️ Si pierdes ENCRYPTION_KEY, NO podrás:
+      - Desencriptar emails existentes
+      - Enviar emails a usuarios
+      - Recuperar cuentas
+   
+   SOLUCIÓN: Haz backup de config.php
+
+2. CAMBIO DE CLAVE
+   ⚠️ Si cambias ENCRYPTION_KEY:
+      - Emails antiguos NO se desencriptarán
+      - Usuarios no recibirán emails
+   
+   SOLUCIÓN: NO cambies la clave después del despliegue
+
+3. BACKUPS
+   ⚠️ Al hacer backup:
+      - Incluye config.php (con ENCRYPTION_KEY)
+      - O guarda la clave por separado
+   
+   Sin la clave, el backup es inútil para emails
+
+═══════════════════════════════════════════════════════════════════
+✅ MEJORES PRÁCTICAS
+═══════════════════════════════════════════════════════════════════
+
+1. GENERAR CLAVE FUERTE
+   ✓ Usa al menos 32 caracteres aleatorios
+   ✓ Incluye mayúsculas, minúsculas, números
+   ✓ Usa generadores criptográficos
+
+2. PROTEGER LA CLAVE
+   ✓ NO la subas a Git (ya está en .gitignore)
+   ✓ NO la compartas
+   ✓ Guárdala en lugar seguro (password manager)
+
+3. PERMISOS DE ARCHIVOS
+   ✓ config.php: chmod 600 (solo owner)
+   ✓ data/: chmod 755
+   ✓ users.json: chmod 644
+
+4. BACKUPS SEGUROS
+   ✓ Encripta los backups
+   ✓ Incluye config.php en backups
+   ✓ Almacena en lugar seguro
+
+═══════════════════════════════════════════════════════════════════
+🧪 VERIFICAR QUE FUNCIONA
+═══════════════════════════════════════════════════════════════════
+
+1. Regístrate con un nuevo usuario
+2. Abre data/users.json
+3. Verifica que veas:
+   - "email_encrypted": "cadena base64..."
+   - "email_hash": "cadena hexadecimal..."
+   - NO veas: "email": "texto-plano@ejemplo.com"
+4. Intenta hacer login → Debe funcionar
+5. Debes recibir email de verificación → Debe llegar
+
+═══════════════════════════════════════════════════════════════════
+📚 REFERENCIAS
+═══════════════════════════════════════════════════════════════════
+
+AES-256-CBC:
+https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
+
+SHA-256:
+https://en.wikipedia.org/wiki/SHA-2
+
+OpenSSL PHP:
+https://www.php.net/manual/en/book.openssl.php
+
+═══════════════════════════════════════════════════════════════════
+❓ PREGUNTAS FRECUENTES
+═══════════════════════════════════════════════════════════════════
+
+P: ¿Es seguro almacenar la clave en config.php?
+R: Sí, siempre que config.php no sea accesible públicamente
+   (.htaccess lo protege) y no se suba a Git (.gitignore)
+
+P: ¿Puedo ver los emails desencriptados?
+R: Solo mientras estés logueado, o desde el código PHP
+
+P: ¿Afecta el rendimiento?
+R: Mínimamente. Encriptar/desencriptar es muy rápido
+
+P: ¿Es obligatorio usar esta característica?
+R: No, pero es ALTAMENTE recomendado para privacidad
+
+P: ¿Los usuarios antiguos seguirán funcionando?
+R: Sí, hay retrocompatibilidad automática
+
+P: ¿Qué pasa si alguien hackea el servidor?
+R: Sin ENCRYPTION_KEY, no pueden desencriptar emails
+   (pero tendrían acceso al código que incluye la clave)
+
+═══════════════════════════════════════════════════════════════════
+🎉 RESUMEN
+═══════════════════════════════════════════════════════════════════
+
+Esta característica de seguridad protege la privacidad de los
+usuarios encriptando sus emails en el almacenamiento, mientras
+mantiene toda la funcionalidad del sistema de confirmación por email.
+
+Es una capa adicional de seguridad que no afecta la usabilidad.
+
+ACCIÓN REQUERIDA:
+─────────────────
+Genera una ENCRYPTION_KEY única en config.php antes de usar
+
+═══════════════════════════════════════════════════════════════════
+
